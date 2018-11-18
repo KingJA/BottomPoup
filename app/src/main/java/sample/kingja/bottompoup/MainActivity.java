@@ -14,13 +14,18 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.flipboard.bottomsheet.OnSheetDismissedListener;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_pop;
     private LinearLayout ll_pop;
+    private BottomSheetLayout bottomSheetLayout;
     private boolean show;
     private TranslateAnimation mShowAction;
     private TranslateAnimation mHiddenAction;
+    private View bottomSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv_pop = findViewById(R.id.tv_pop);
         ll_pop = findViewById(R.id.ll_pop);
+        bottomSheetLayout = findViewById(R.id.bottomSheetLayout);
+        bottomSheet = View.inflate(this, R.layout.pop,null);
 //        LayoutTransition transition = new LayoutTransition();
 //        // 子View添加到mContainer时的动画
 //        Animator appearAnim = ObjectAnimator
@@ -72,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mHiddenAction.setDuration(500);
-
+        bottomSheetLayout.addOnSheetDismissedListener(new OnSheetDismissedListener() {
+            @Override
+            public void onDismissed(BottomSheetLayout bottomSheetLayout) {
+                show=false;
+            }
+        });
 
     }
 
@@ -81,16 +93,26 @@ public class MainActivity extends AppCompatActivity {
 //        bottomPopup.showPopupAbove();
         show = !show;
 //        ll_pop.setVisibility(show ? View.VISIBLE : View.GONE);
-
+//
+//        if (show) {
+//            ll_pop.startAnimation(mShowAction);
+//            ll_pop.setVisibility(View.VISIBLE);
+//        }else{
+//            ll_pop.startAnimation(mHiddenAction);
+//
+//        }
         if (show) {
-            ll_pop.startAnimation(mShowAction);
-            ll_pop.setVisibility(View.VISIBLE);
+            bottomSheetLayout.showWithSheetView(bottomSheet);
         }else{
-            ll_pop.startAnimation(mHiddenAction);
-
+            bottomSheetLayout.dismissSheet();
         }
+
+
 
     }
 
 
+    public void hide(View view) {
+        ll_pop.startAnimation(mHiddenAction);
+    }
 }

@@ -35,6 +35,7 @@ public class BottomPopup extends PopupWindow {
             parentView.getLocationOnScreen(location);
             int measuredHeight = parentView.getMeasuredHeight();
             showAtLocation(parentView, Gravity.BOTTOM,0, measuredHeight);
+//            showAtLocation(parentView, Gravity.NO_GRAVITY, location[0], location[1]+getHeight());
         }
 
 
